@@ -16,14 +16,14 @@ public class TalentConfig {
     private Map<String, Talent> talents = new HashMap<>();
 
     public TalentConfig(Plugin plugin) {
-        // 初始化配置文件
+        // 初始化
         configFile = new File(plugin.getDataFolder(), "天赋.yml");
         if (!configFile.exists()) {
             plugin.saveResource("天赋.yml", false);
         }
         config = YamlConfiguration.loadConfiguration(configFile);
 
-        // 加载天赋配置
+        // 加载
         loadTalentConfig();
     }
 
