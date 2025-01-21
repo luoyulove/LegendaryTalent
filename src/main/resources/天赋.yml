@@ -1,0 +1,16 @@
+天赋配置:
+  坚韧:
+    name: "坚韧"
+    description: "增加生命值和护甲值"
+    effects:
+      Health: 10
+      Armor: 1
+  力量:
+    name: "力量"
+    description: "增加伤害属性"
+    effects:
+      MeleeAttack: 1
+      MagicAttack: 1
+
+
+
