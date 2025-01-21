@@ -6,6 +6,9 @@ import luoyu.legendarytalent.Talent.Talent;
 import luoyu.legendarytalent.Talent.TalentConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
@@ -53,5 +56,15 @@ public final class LegendaryTalent extends JavaPlugin {
             }
         }
         Bukkit.getScheduler().runTask(this, () -> stat.updateTrigger(player));
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+        public void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+
+        Map<String, Talent> allTalents = talentConfig.getAllTalents();
+        for (String talentKey : allTalents.keySet()){
+            updateTalentStat(player, talentKey);
+        }
     }
 }
