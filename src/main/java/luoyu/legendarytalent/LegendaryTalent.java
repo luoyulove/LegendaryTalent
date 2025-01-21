@@ -58,20 +58,20 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
                 System.out.println("为玩家 "+ player.getName() +" 增加属性，原因: talent / " + "增加属性: " + stats + " 数值: " + values[0]);
             }
         }
-        Bukkit.getScheduler().runTaskLater(instance, () -> {
+        Bukkit.getScheduler().runTask(instance, () -> {
             stat.updateTrigger(player);
-        }, 20);
+        });
     }
     @EventHandler(priority = EventPriority.NORMAL)
         public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
 
-        Bukkit.getScheduler().runTaskLater(instance, () -> {
+        Bukkit.getScheduler().runTask(instance, () -> {
             PStat stat = LegendaryPowers.getPStat(player);
             Map<String, Talent> allTalents = talentConfig.getAllTalents();
             for (String talentKey : allTalents.keySet()){
                 updateTalentStat(player, talentKey, stat);
             }
-        }, 60);
+        });
     }
 }
