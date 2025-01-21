@@ -41,6 +41,8 @@ public class TalentConfig {
                         for (String effectKey : effectsConfig.getKeys(false)) {
                             double value = effectsConfig.getDouble(effectKey);
                             effects.put(effectKey, value);
+                            System.out.println("解析了天赋配置");
+                            System.out.println("解析: " + effectKey + "/" + value);
                         }
                     }
                     talents.put(talentKey, new Talent(name, description, effects));

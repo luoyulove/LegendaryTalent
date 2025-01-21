@@ -8,13 +8,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
 import static com.gmail.maccaronne.craftlearner.magicspell.Hooker.getVariable;
 
-public final class LegendaryTalent extends JavaPlugin {
+public final class LegendaryTalent extends JavaPlugin implements Listener {
 
     private TalentConfig talentConfig;
     private static LegendaryPowers instance;
@@ -23,6 +24,7 @@ public final class LegendaryTalent extends JavaPlugin {
     public void onEnable() {
         System.out.println("【LegendaryTalent】启动");
         talentConfig = new TalentConfig(this);
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     @Override
@@ -41,11 +43,10 @@ public final class LegendaryTalent extends JavaPlugin {
         return talentConfig;
     }
 
-    public void updateTalentStat(Player player, String talentKey){
-        PStat stat = LegendaryPowers.getPStat(player);
-
+    public void updateTalentStat(Player player, String talentKey, PStat stat){
         Talent talent = talentConfig.getTalent(talentKey);
         Double talentLevel = getVariable("天赋_"+talentKey, player);
+
         if (talent != null && talentLevel > 0){
             Map<String, Double> effects = talent.getEffects();
             for (Map.Entry<String, Double> entry : effects.entrySet()) {
@@ -53,19 +54,19 @@ public final class LegendaryTalent extends JavaPlugin {
                 Double value = entry.getValue();
                 Double[] values = {value * talentLevel};
                 stat.addValue("talent", stats, values);
-                System.out.println("为玩家增加属性，原因: talent / " + "增加属性: " + stats + " 数值: " + values);
+                System.out.println("为玩家 "+ player.getName() +" 增加属性，原因: talent / " + "增加属性: " + stats + " 数值: " + values[0]);
             }
         }
-        Bukkit.getScheduler().runTask(this, () -> stat.updateTrigger(player));
+        Bukkit.getScheduler().runTask(instance, () -> stat.updateTrigger(player));
     }
-
     @EventHandler(priority = EventPriority.NORMAL)
         public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
 
+        PStat stat = LegendaryPowers.getPStat(player);
         Map<String, Talent> allTalents = talentConfig.getAllTalents();
         for (String talentKey : allTalents.keySet()){
-            updateTalentStat(player, talentKey);
+            updateTalentStat(player, talentKey, stat);
         }
     }
 }
