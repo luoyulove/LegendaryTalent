@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
+import static com.gmail.maccaronne.craftlearner.magicspell.Hooker.getVariable;
 
 public final class LegendaryTalent extends JavaPlugin {
 
@@ -37,10 +38,11 @@ public final class LegendaryTalent extends JavaPlugin {
         return talentConfig;
     }
 
-    public void updateTalentStat(Player player, String talentKey, int talentLevel){
+    public void updateTalentStat(Player player, String talentKey){
         PStat stat = LegendaryPowers.getPStat(player);
 
         Talent talent = talentConfig.getTalent(talentKey);
+        Double talentLevel = getVariable("天赋_"+talentKey, player);
         if (talent != null && talentLevel > 0){
             Map<String, Double> effects = talent.getEffects();
             for (Map.Entry<String, Double> entry : effects.entrySet()) {
