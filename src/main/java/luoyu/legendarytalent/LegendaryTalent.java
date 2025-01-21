@@ -53,6 +53,7 @@ public final class LegendaryTalent extends JavaPlugin {
                 Double value = entry.getValue();
                 Double[] values = {value * talentLevel};
                 stat.addValue("talent", stats, values);
+                System.out.println("为玩家增加属性，原因: talent / " + "增加属性: " + stats + " 数值: " + values);
             }
         }
         Bukkit.getScheduler().runTask(this, () -> stat.updateTrigger(player));
