@@ -4,6 +4,7 @@ import com.gmail.maccaronne.legendarypowers.LegendaryPowers;
 import com.gmail.maccaronne.legendarypowers.effects.PStat;
 import luoyu.legendarytalent.Talent.Talent;
 import luoyu.legendarytalent.Talent.TalentConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 public final class LegendaryTalent extends JavaPlugin {
 
     private TalentConfig talentConfig;
+    private static LegendaryPowers instance;
 
     @Override
     public void onEnable() {
@@ -22,6 +24,13 @@ public final class LegendaryTalent extends JavaPlugin {
     @Override
     public void onDisable() {
         System.out.println("【LegendaryTalent】关闭");
+    }
+
+    public static LegendaryPowers getInstance() {
+        if (instance == null) {
+            instance = JavaPlugin.getPlugin(LegendaryPowers.class);
+        }
+        return instance;
     }
 
     public TalentConfig getTalentConfig(){
@@ -41,5 +50,6 @@ public final class LegendaryTalent extends JavaPlugin {
                 stat.addValue("talent", stats, values);
             }
         }
+        Bukkit.getScheduler().runTask(this, () -> stat.updateTrigger(player));
     }
 }
