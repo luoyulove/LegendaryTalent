@@ -18,11 +18,12 @@ import static com.gmail.maccaronne.craftlearner.magicspell.Hooker.getVariable;
 public final class LegendaryTalent extends JavaPlugin implements Listener {
 
     private TalentConfig talentConfig;
-    private static LegendaryPowers instance;
+    private static LegendaryTalent instance;
 
     @Override
     public void onEnable() {
         System.out.println("【LegendaryTalent】启动");
+        instance = this;
         talentConfig = new TalentConfig(this);
         Bukkit.getPluginManager().registerEvents(this, this);
     }
@@ -32,9 +33,9 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
         System.out.println("【LegendaryTalent】关闭");
     }
 
-    public static LegendaryPowers getInstance() {
+    public static LegendaryTalent getInstance() {
         if (instance == null) {
-            instance = JavaPlugin.getPlugin(LegendaryPowers.class);
+            instance = JavaPlugin.getPlugin(LegendaryTalent.class);
         }
         return instance;
     }
@@ -57,16 +58,20 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
                 System.out.println("为玩家 "+ player.getName() +" 增加属性，原因: talent / " + "增加属性: " + stats + " 数值: " + values[0]);
             }
         }
-        Bukkit.getScheduler().runTask(instance, () -> stat.updateTrigger(player));
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            stat.updateTrigger(player);
+        }, 20);
     }
     @EventHandler(priority = EventPriority.NORMAL)
         public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
 
-        PStat stat = LegendaryPowers.getPStat(player);
-        Map<String, Talent> allTalents = talentConfig.getAllTalents();
-        for (String talentKey : allTalents.keySet()){
-            updateTalentStat(player, talentKey, stat);
-        }
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            PStat stat = LegendaryPowers.getPStat(player);
+            Map<String, Talent> allTalents = talentConfig.getAllTalents();
+            for (String talentKey : allTalents.keySet()){
+                updateTalentStat(player, talentKey, stat);
+            }
+        }, 60);
     }
 }
