@@ -21,12 +21,9 @@ public class TalentCommand implements CommandExecutor {
 
         if (args.length == 0) {
             sender.sendMessage("§a可以点击下面的指令快速输入");
-            MaccaronneUtils.sendPromptMessage("§a/hb starttime: §b开始记录玩家时长", "/hb starttime ", "点击快速执行指令", player);
-            MaccaronneUtils.sendPromptMessage("§a/hb endtime: §b结束记录玩家时长", "/hb endtime ", "点击快速执行指令", player);
-            MaccaronneUtils.sendPromptMessage("§a/hb checklevel: §b检查玩家等级", "/hb checklevel ", "点击快速执行指令", player);
+            MaccaronneUtils.sendPromptMessage("§a/lt update: §b更新玩家天赋效果", "/lt update ", "点击快速执行指令", player);
             if (player == null) {
-                sender.sendMessage("§a/hb starttime: §b开始记录玩家时长");
-                sender.sendMessage("§a/hb endtime: §b结束记录玩家时长");
+                sender.sendMessage("§a/lt update: §b更新玩家天赋效果");
             }
             return true;
         }
@@ -41,7 +38,7 @@ public class TalentCommand implements CommandExecutor {
                 break;
             default:
                 sender.sendMessage("未知子命令" + args[0]);
-                sender.sendMessage("§a/lt update: §b开始记录玩家时长");
+                sender.sendMessage("§a/lt update: §b更新玩家天赋效果");
                 break;
         }
         return true;
