@@ -54,19 +54,22 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
 
         stat.resetMap("talent");
 
-        if (talent != null && talentLevel > 0){
-            Map<String, Double> effects = talent.getEffects();
-            for (Map.Entry<String, Double> entry : effects.entrySet()) {
-                String stats = entry.getKey();
-                Double value = entry.getValue();
-                Double[] values = {value * talentLevel};
-                stat.addValue("talent", stats, values);
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            if (talent != null && talentLevel > 0){
+                Map<String, Double> effects = talent.getEffects();
+                for (Map.Entry<String, Double> entry : effects.entrySet()) {
+                    String stats = entry.getKey();
+                    Double value = entry.getValue();
+                    Double[] values = {value * talentLevel};
+                    stat.addValue("talent", stats, values);
+                }
             }
-        }
+        }, 10);
+
         Bukkit.getScheduler().runTaskLater(instance, () -> {
             stat.updateTrigger(player);
             if (setMaxHealth) player.setHealth(player.getMaxHealth());
-        }, 20);
+        }, 10);
     }
     @EventHandler(priority = EventPriority.NORMAL)
         public void onPlayerJoin(PlayerJoinEvent event){
