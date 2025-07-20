@@ -52,6 +52,8 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
         Talent talent = talentConfig.getTalent(talentKey);
         Double talentLevel = getVariable("天赋_"+talentKey, player);
 
+        stat.resetMap("talent");
+
         if (talent != null && talentLevel > 0){
             Map<String, Double> effects = talent.getEffects();
             for (Map.Entry<String, Double> entry : effects.entrySet()) {
