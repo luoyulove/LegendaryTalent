@@ -1,3 +1,8 @@
 name: LegendaryTalent
 version: '${version}'
 main: luoyu.legendarytalent.LegendaryTalent
+
+commands:
+  lt:
+    description: 主指令
+    usage: /<lt>

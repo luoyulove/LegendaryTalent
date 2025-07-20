@@ -3,6 +3,7 @@ package luoyu.legendarytalent;
 import com.gmail.maccaronne.legendarypowers.LegendaryPowers;
 import com.gmail.maccaronne.legendarypowers.effects.PStat;
 import luoyu.legendarytalent.Talent.Talent;
+import luoyu.legendarytalent.Talent.TalentCommand;
 import luoyu.legendarytalent.Talent.TalentConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,6 +27,9 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
         instance = this;
         talentConfig = new TalentConfig(this);
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        TalentCommand command = new TalentCommand();
+        this.getCommand("lt").setExecutor(new TalentCommand());
     }
 
     @Override
@@ -44,7 +48,7 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
         return talentConfig;
     }
 
-    public void updateTalentStat(Player player, String talentKey, PStat stat){
+    public void updateTalentStat(Player player, String talentKey, PStat stat, Boolean setMaxHealth){
         Talent talent = talentConfig.getTalent(talentKey);
         Double talentLevel = getVariable("天赋_"+talentKey, player);
 
@@ -59,7 +63,7 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
         }
         Bukkit.getScheduler().runTaskLater(instance, () -> {
             stat.updateTrigger(player);
-            player.setHealth(player.getMaxHealth());
+            if (setMaxHealth) player.setHealth(player.getMaxHealth());
         }, 20);
     }
     @EventHandler(priority = EventPriority.NORMAL)
@@ -70,7 +74,17 @@ public final class LegendaryTalent extends JavaPlugin implements Listener {
             PStat stat = LegendaryPowers.getPStat(player);
             Map<String, Talent> allTalents = talentConfig.getAllTalents();
             for (String talentKey : allTalents.keySet()){
-                updateTalentStat(player, talentKey, stat);
+                updateTalentStat(player, talentKey, stat, true);
+            }
+        }, 60);
+    }
+
+    public void updateTalent(Player player){
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            PStat stat = LegendaryPowers.getPStat(player);
+            Map<String, Talent> allTalents = talentConfig.getAllTalents();
+            for (String talentKey : allTalents.keySet()){
+                updateTalentStat(player, talentKey, stat, false);
             }
         }, 60);
     }
